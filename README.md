@@ -31,7 +31,7 @@ Tests automatically run on pull requests and pushes to the `dev` branch. Reports
 ## 📁 Folder Structure
 ```
 ├── .github/workflows/             # GitHub Actions CI configuration
-│   └── playwright.yml
+│   └── playwright-ci.yml
 ├── tests/                         # Test specifications
 │   └── auth/
 │       └── login.spec.ts

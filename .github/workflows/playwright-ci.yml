@@ -7,7 +7,7 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  Test on Chrome on Ubuntu 22:
+  Test:
     runs-on: ubuntu-22.04
 
     steps:
