@@ -1,60 +1,69 @@
-## 📦 Setup
-```bash
+Project Setup and Usage
+📦 Setup
+Run the following command to install dependencies:
 npm install
-```
+npx playwright install
 
-## 🧪 Run Tests
-```bash
+🧪 Run Tests
+Execute all tests with:
 npm test
-```
 
-## 🧪 Run in Headed Mode
-```bash
+🧪 Run in Headed Mode
+Run tests in headed mode (with browser UI) using:
 npm run test:headed
-```
 
-## 📊 View Reports
-```bash
+📊 View Reports
+Generate and view test reports with:
 npm run test:report
-```
 
-## 🚀 GitHub Actions
-All tests run on PRs and pushes to `dev`. Reports are uploaded as artifacts.
-
-
+🚀 GitHub Actions
+Tests automatically run on pull requests and pushes to the dev branch. Reports are uploaded as artifacts in GitHub Actions.
 📁 Folder Structure
-│
-├── .github/workflows/             # CI setup for GitHub Actions
+├── .github/workflows/             # GitHub Actions CI configuration
 │   └── playwright.yml
-│
-├── tests/                         # All test specs
+├── tests/                         # Test specifications
 │   └── auth/
 │       └── login.spec.ts
-│
 ├── pages/                         # Page Object Models
 │   └── LoginPage.ts
-│
-├── utils/                         # Helper functions (e.g., test data, config readers)
+├── utils/                         # Helper functions (test data, config)
 │   └── testData.ts
-│
-├── playwright.config.ts          # Core Playwright configuration
-├── package.json                  # NPM scripts & dependencies
-├── tsconfig.json                 # TypeScript configuration
-├── README.md                     # Setup & usage docs
-└── .env                          # Environment variables (login creds, URLs)
+├── playwright.config.ts           # Playwright configuration
+├── package.json                   # NPM scripts and dependencies
+├── tsconfig.json                  # TypeScript configuration
+├── README.md                      # Project setup and usage documentation
+└── .env                           # Environment variables (e.g., credentials, URLs)
 
 ⚙️ Core Features of the Framework
+
+
+
 Feature
 Description
+
+
+
 Page Object Model
-Encapsulates selectors and actions per page, making tests maintainable.
-Cross-browser testing
-Runs on Chromium, Firefox, and WebKit.
+Encapsulates page selectors and actions for maintainable tests.
+
+
+Cross-browser Testing
+Supports Chromium, Firefox, and WebKit.
+
+
 Retries & Reporting
-Retry failed tests, HTML & GitHub summary reports, video/screenshot capture.
+Automatic retries, HTML reports, GitHub summaries, video/screenshot capture.
+
+
 Parallel Test Execution
-Boosts speed, especially with larger suites.
+Runs tests in parallel for faster execution, ideal for large suites.
+
+
 Environment Support
-Easily switch between staging, QA, and prod via .env.
+Switch between staging, QA, and prod environments using .env file.
+
+
 GitHub CI/CD
-Runs tests on every push/PR with artifacts & logs.
+Automated test runs on every push/PR with logs and artifacts.
+
+
