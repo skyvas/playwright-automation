@@ -5,6 +5,7 @@ Run the following command to install dependencies:
 ```bash
 npm install
 npx playwright install
+npm install pino
 ```
 
 ## 🧪 Run Tests

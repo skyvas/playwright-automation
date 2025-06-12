@@ -27,6 +27,7 @@ coverage/
 
 # TypeScript cache
 *.tsbuildinfo
+package-lock.json
 
 # Playwright specific
 playwright-report/
