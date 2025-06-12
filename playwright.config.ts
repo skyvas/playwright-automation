@@ -1,11 +1,12 @@
 import { defineConfig } from '@playwright/test';
-import dotenv from 'dotenv';
-dotenv.config();
+import { env } from './utils/custom-env';
+import { globalSetup, globalTeardown } from './utils/test-hooks';
+// dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
   timeout: 30000,
-  retries: 1,
+  retries: env.RETRIES,
   reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
 
   use: {
@@ -13,7 +14,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'retain-on-failure',
-    baseURL: 'https://www.saucedemo.com',
+    baseURL:  env.BASE_URL,
   },
   projects: [
     { name: 'Chromium', use: { browserName: 'chromium' } },
