@@ -1,314 +1,135 @@
-# Playwright Automation Framework and MCP Agent Scaffold
+# Playwright Automation Framework & QA Agent Scaffold
 
-A modern, production-grade test automation scaffold built with **Playwright**, TypeScript, and integrated **Model Context Protocol (MCP)** support for autonomous QA agents.
-
-Designed as an extensible starter template, this project enables engineering teams and AI pair programmers to write, organize, and execute reliable automated tests across multiple tiers—from rapid smoke tests to full regression suites.
+A modern test automation framework built with **Playwright**, TypeScript, and integrated **Model Context Protocol (MCP)** support for autonomous QA agents.
 
 ---
 
 ## Key Highlights
 
-- **Tiered Test Architecture**: Dedicated directory structures for `smoke` tests (`@smoke`), `regression` suites, and reusable `fixtures`.
-- **Page Object Model (POM)**: Robust, reusable, and maintainable page object architecture with a shared `BasePage`.
-- **Playwright MCP Server Support**: Out-of-the-box MCP integration (`@playwright/mcp`) allowing AI agents (Antigravity, Claude Code, Cursor) to navigate, inspect, snapshot, and interact with web applications.
-- **Specialized QA Agent Squad (`.agents/`)**: Embedded expert agent skills covering Test Automation, UX/User Feasibility, WCAG Accessibility (`a11y`), Performance, Form Validation, Code Review, and Quality Gatekeeping.
-- **Cross-Browser and Device Emulation**: Pre-configured for Chromium, Firefox, WebKit, and mobile viewport simulation.
-- **Rich Reporting and Diagnostics**: Auto-configured HTML reports, trace viewer, screenshots, and videos on test failures.
-- **CI/CD Ready**: Pre-built GitHub Actions workflows for continuous integration and automated test execution.
+- **Tiered Test Architecture**: Dedicated suites for `@smoke` sanity checks and `@regression` end-to-end user journeys.
+- **Autonomous QA Agent Squad**: Embedded AI personas and skills (`.agents/`) for test generation, code reviews, accessibility audits, and release gates.
+- **TMS Ingestion & Traceability**: End-to-end orchestration converting manual tests (TestRail, Jira Xray, Zephyr, Markdown) into executable Playwright specs.
+- **Playwright MCP Server**: Live browser inspection, accessible locator discovery, and execution via MCP (`@playwright/mcp`).
+- **Production CI/CD**: Automated GitHub Actions workflow with executive test summaries, failure annotations, and HTML/trace artifacts.
 
 ---
 
-## Project Architecture
+## Core Project Structure
 
-```
-playwright-automation/
-├── .agents/                          # Embedded AI QA Agent Squad & MCP Config
-│   ├── mcp_config.json               # Playwright MCP server definition
-│   ├── rules/
-│   │   └── playwright-standards.md   # Quality standards & locator rules for agents
-│   ├── agents/                       # QA Specialist Personas
-│   │   ├── qa-lead.md                # Quality strategy & test planning
-│   │   ├── sdet-automation.md        # Playwright test & POM specialist
-│   │   ├── ux-feasibility-auditor.md # UX heuristics, journey & a11y auditor
-│   │   ├── qa-code-reviewer.md       # Anti-pattern detection & code reviewer
-│   │   └── test-ingestion-orchestrator.md # Manual test ingestion & automation orchestrator
-│   └── skills/                       # Modular QA skills (Playwright Pro, A11y, UX, etc.)
-│       ├── playwright-pro/           # Test generator, reviewer, fixer, coverage
-│       ├── a11y-audit/               # Accessibility testing & WCAG compliance
-│       ├── ux-researcher-designer/   # Usability & feasibility heuristics
-│       ├── form-cro/                 # Form validation & input UX testing
-│       ├── performance-profiler/     # Core Web Vitals & performance auditing
-│       ├── code-reviewer/            # QA code review & best practices
-│       ├── focused-fix/              # Automated flakiness & bug remediation
-│       ├── api-test-suite-builder/   # API testing patterns
-│       └── ship-gate/                # Definition of Done & release gates
-├── manual-tests/                     # Test Management System (TMS) Ingestion
-│   ├── incoming/                     # Drop zone for exported manual tests (e.g. orbit_testrail_import.csv)
-│   ├── examples/                     # Ready-to-use export templates (TestRail, Xray, Zephyr, MD)
-│   ├── parsed/                       # Normalized test manifests (test-manifest.json)
-│   └── traceability-matrix.md        # Bi-directional mapping: 48/48 (100%) automated coverage
-├── pages/                            # Page Object Models (POM)
-│   ├── BasePage.ts                   # Core page abstraction & shared actions
-│   └── orbit/                        # Orbit Platform POMs
-│       ├── OrbitLoginPage.ts         # Authentication & quick sign-in
-│       ├── OrbitWorkspacePage.ts     # Workspace, navigation, notifications, search
-│       ├── OrbitProjectModal.ts      # Project creation & column configuration
-│       ├── OrbitSprintModal.ts       # Sprint management, planning & completion
-│       ├── OrbitIssueModal.ts        # Issue creation, detail modal, checklists, comments
-│       └── OrbitUserModal.ts         # User management, RBAC & admin controls
-├── scripts/                          # Pipeline Automation Scripts
-│   ├── parse-manual-tests.ts         # Multi-format TMS normalization engine
-│   └── generate-automation.ts        # Autonomous Playwright spec & matrix generator
-├── tests/                            # Automated Test Suites (48 tests)
-│   ├── fixtures/
-│   │   └── baseTest.ts               # Custom Playwright test fixture with injected POMs
-│   ├── smoke/                        # Sanity suite (@smoke)
-│   │   └── auth.smoke.spec.ts        # TC-1..3, TC-7..8
-│   └── regression/                   # Modular regression suites (@regression)
-│       ├── auth.spec.ts              # TC-4..6 (Negative authentication)
-│       ├── projects.spec.ts          # TC-9..16 (Project lifecycle & columns)
-│       ├── sprints.spec.ts           # TC-17..22 (Sprint scheduling & completion)
-│       ├── issues.spec.ts            # TC-23..31 (Issue CRUD, markdown, checklists)
-│       ├── search-filters.spec.ts    # TC-32..35 (Keyword & multi-criteria filters)
-│       ├── user-management.spec.ts   # TC-36..40 (RBAC, user lifecycle, passwords)
-│       ├── profile-notifications.spec.ts # TC-41..44 (User profile & notifications)
-│       └── keyboard-ux.spec.ts       # TC-45..48 (Shortcuts & responsive UX)
-├── utils/                            # Shared Utilities & Config
-│   ├── env.ts                        # Environment configuration
-│   └── testData.ts                   # Orbit test users & project constants
-├── .github/workflows/                # CI/CD Pipelines
-│   └── playwright-ci.yml             # Automated CI workflow
-├── playwright.config.ts              # Global Playwright configuration
-├── package.json                      # Dependencies & NPM test scripts
-├── tsconfig.json                     # TypeScript configuration
-└── .env                              # Environment variables (URLs, credentials)
-```
+| Directory | Purpose |
+| :--- | :--- |
+| `tests/` | Playwright test suites (`smoke/`, `regression/`) and fixtures (`fixtures/baseTest.ts`) |
+| `pages/` | Page Object Models extending `BasePage` |
+| `manual-tests/` | Ingestion dropzone (`incoming/`), parsed manifests, and traceability matrix |
+| `.agents/` | Agent squad personas, MCP configuration, and QA skills (Playwright Pro, A11y, UX) |
+| `scripts/` | TMS parsing and automated spec generation scripts |
 
 ---
 
 ## Getting Started
 
-### 1. Prerequisites
-- **Node.js**: `v18.0.0` or later
-- **npm**: `v9.0.0` or later
-
-### 2. Installation
-
-Clone this repository and install dependencies:
-
+### 1. Installation
 ```bash
 git clone https://github.com/skyvas/playwright-automation.git
 cd playwright-automation
 npm install
-```
-
-Install Playwright browsers and OS dependencies:
-
-```bash
 npx playwright install --with-deps
-```
-
-### 3. Environment Configuration
-
-Copy the sample environment file and set your target environment URLs and test credentials:
-
-```bash
 cp .env.example .env
 ```
 
----
-
-## Running Tests
-
-This scaffold comes with tailored npm scripts to run test suites at different granularities:
-
-| Command | Description |
-| :--- | :--- |
-| `npm test` | Run all test suites across all configured browsers in headless mode |
-| `npm run test:smoke` | Run only the `@smoke` tests (critical-path smoke suite) |
-| `npm run test:regression` | Run the full regression / end-to-end test suite (`tests/regression/`) |
-| `npm run test:headed` | Run tests in headed browser mode (visible UI) |
-| `npm run test:ui` | Open the interactive Playwright UI Runner |
-| `npm run test:debug` | Launch the Playwright Inspector in step-by-step debug mode |
-| `npm run test:report` | Serve and view the interactive HTML test report |
-
-### Targeted Execution Examples
-
-Run a specific test file:
+### 2. Running Tests
 ```bash
-npx playwright test tests/smoke/auth.smoke.spec.ts
-```
+# Run all tests
+npm test
 
-Run tests on a specific browser:
-```bash
-npx playwright test --project=Chromium
-```
+# Run critical smoke tests
+npm run test:smoke
 
-Filter by test tag:
-```bash
-npx playwright test --grep "@smoke"
+# Run full regression suite
+npm run test:regression
+
+# Interactive UI mode
+npm run test:ui
+
+# View HTML report
+npm run test:report
 ```
 
 ---
 
-## Continuous Integration & Test Reporting
+## Agent-Driven Ingestion Pipeline & Orchestration
 
-This project includes fully automated CI reporting via GitHub Actions:
+This framework features an autonomous orchestration pipeline where specialized AI agents under `.agents/` collaborate to convert manual test exports into verified, industry-standard Playwright automation:
 
-- **Executive Job Summary**: High-level execution metrics (pass rate, test counts, failed tests table, duration) are rendered directly on the GitHub Actions workflow summary page (`$GITHUB_STEP_SUMMARY`).
-- **PR Diff Annotations**: Playwright's `github` reporter annotates failing lines directly in pull request code reviews.
-- **Report & Trace Artifacts**: The full HTML report (`playwright-report/`) and trace diagnostics (`test-results/` with traces, failure screenshots, and videos) are uploaded as workflow artifacts with a 14-day retention period.
+```mermaid
+flowchart TD
+    A["TMS Export Files<br/>(TestRail, Xray, Zephyr, Markdown)"] --> B["Test Ingestion Orchestrator<br/>(.agents/agents/test-ingestion-orchestrator.md)"]
+    B -->|Normalized Manifest| C["QA Lead Agent<br/>(.agents/agents/qa-lead.md)"]
+    C -->|Scope & Risk Prioritization| D["SDET Automation Engineer<br/>(.agents/agents/sdet-automation.md)"]
+    D -->|Draft POMs & Specs| E["UX & Feasibility Auditor<br/>(.agents/agents/ux-feasibility-auditor.md)"]
+    E -->|A11y & Usability Review| F["QA Code Reviewer<br/>(.agents/agents/qa-code-reviewer.md)"]
+    F -->|Pass Quality Gate| G["Production Spec & Traceability Matrix<br/>(tests/regression/ & traceability-matrix.md)"]
+    F -->|Flagged Anti-Patterns| D
+```
+
+### Step-by-Step Agent Pipeline:
+
+1. **Ingestion & Normalization (`test-ingestion-orchestrator`)**
+   - Ingests manual test cases dropped in `manual-tests/incoming/` across supported formats (TestRail CSV, Jira Xray `.feature`, Zephyr JSON, Markdown).
+   - Normalizes heterogeneous test data into a unified schema: `manual-tests/parsed/test-manifest.json` (`npm run parse:manual`).
+
+2. **Test Strategy & Risk Prioritization (`qa-lead`)**
+   - Evaluates test intent and tags suites appropriately (`@smoke` for critical path sanity checks, `@regression` for full flows).
+   - Audits coverage gaps across critical user journeys and assigns execution priorities.
+
+3. **Page Object & Spec Synthesis (`sdet-automation`)**
+   - Matches manual actions to existing Page Object Models (`pages/`) or extends `BasePage` with new elements.
+   - Generates executable Playwright test specs using custom fixtures (`tests/fixtures/baseTest.ts`), accessible locators (`getByRole`, `getByLabel`), and web-first async assertions (`expect(locator).toBeVisible()`).
+
+4. **UX & Accessibility Verification (`ux-feasibility-auditor`)**
+   - Validates user journey feasibility, form input edge cases, error messaging, and WCAG 2.2 Level AA accessibility standards.
+
+5. **Rigorous Review & Quality Gatekeeping (`qa-code-reviewer`)**
+   - Performs automated static and behavioral code review: strictly rejects anti-patterns (no hardcoded `page.waitForTimeout()`, no brittle XPath/CSS).
+   - Enforces test state independence and auto-retrying assertions.
+   - Enforces the Definition of Done (`ship-gate`), logs verification, and updates `manual-tests/traceability-matrix.md`.
+
+---
+
+## Working with Agents (Example Prompts)
+
+Trigger the embedded QA Agent Squad using natural language queries in your AI assistant (e.g. Antigravity, Claude Code, Cursor):
+
+### 1. Ingest Manual Tests & Generate Automation
+> *"Ingest the manual test export files from `manual-tests/incoming/`. Parse the test manifest, map steps to existing Page Object Models, generate Playwright specs adhering to industry standards, and update the traceability matrix."*
+
+### 2. Generate a New Feature Test Spec
+> *"Write an automated Playwright smoke test for the user checkout flow using our Page Object Model in `pages/` and custom test fixture. Ensure all locators use `getByRole` and assertions are web-first."*
+
+### 3. QA Code Review & Flakiness Remediation
+> *"Review `tests/regression/ingested-tests.spec.ts` against our Playwright standards. Check for hardcoded timeouts, fragile CSS/XPath selectors, or missing assertions, and fix any violations."*
+
+### 4. Accessibility & Performance Audits
+> *"Run an accessibility audit on the login and inventory pages using the `@a11y-audit` skill. Verify WCAG 2.2 Level AA compliance and report any contrast or label violations."*
 
 ---
 
 ## Playwright MCP Server Integration
 
-This repository includes first-class support for the **Playwright Model Context Protocol (MCP)** server. This allows AI pair programmers and testing agents to:
-- Directly control a headless or headed browser session
-- Inspect the live DOM and generate accessible locators
-- Execute exploratory testing sessions
-- Take screenshots and trace user flows
+Enable live browser control and DOM inspection for AI agents via Model Context Protocol:
 
-### Starting the MCP Server Locally
-
-Run headless mode:
 ```bash
+# Headless mode
 npm run mcp:playwright
-```
 
-Run headed mode (watch agent actions live on your screen):
-```bash
+# Headed mode (watch agent interactions live)
 npm run mcp:playwright:headed
 ```
 
-### Agent Configuration
-
-The MCP server is pre-configured in `.agents/mcp_config.json` and `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp", "--headless"]
-    }
-  }
-}
-```
-
----
-
-## The QA Agent Squad (`.agents/`)
-
-Located in `.agents/`, the QA Agent Squad equips AI assistants with specialized roles and runbooks:
-
-| Agent / Skill | Expertise & Focus |
-| :--- | :--- |
-| **Playwright Pro** (`playwright-pro`) | Test authoring (`generate`), test quality review (`pw-review`), flakiness repair (`fix`), and coverage analysis. |
-| **UX & Feasibility** (`ux-researcher-designer`) | Evaluates user flows, usability heuristics, cognitive load, and feasibility of UI workflows. |
-| **Accessibility Auditor** (`a11y-audit`) | Automated and exploratory accessibility testing adhering to WCAG 2.2 Level AA guidelines. |
-| **Form CRO Auditor** (`form-cro`) | Deep testing of forms, field validation, edge-case input handling, and conversion rate optimization. |
-| **Performance Profiler** (`performance-profiler`) | Core Web Vitals (LCP, CLS, INP) performance analysis and resource bottleneck detection. |
-| **Code Reviewer** (`code-reviewer`) | Enforces Playwright best practices, eliminating anti-patterns (e.g. hardcoded `waitForTimeout`). |
-| **Release Gatekeeper** (`ship-gate`) | Validates definition of done, test coverage, and pre-release readiness checklists. |
-| **Ingestion Orchestrator** (`test-ingestion-orchestrator`) | Ingests manual tests from TMS exports, synthesizes POMs and Playwright specs, and updates traceability. |
-
----
-
-## Manual Test Ingestion and Automation Pipeline
-
-This framework provides an autonomous bridge between manual Test Management Systems (TMS) and Playwright automation.
-
-### Supported TMS Export Formats
-- **TestRail**: CSV exports containing `ID`, `Title`, `Preconditions`, `Steps`, `Expected Result`, and `Priority`.
-- **Jira / Xray**: Cucumber Gherkin (`.feature`) files and JSON test exports.
-- **Zephyr / qTest**: Standard JSON or CSV test case exports.
-- **Markdown / Generic**: Structured Markdown documents (`.md`) with test case headings and step lists.
-
-### How to Ingest and Generate Tests
-
-1. **Drop Export Files**: Place your TMS export files into `manual-tests/incoming/`:
-   ```bash
-   cp ~/Downloads/testrail-export.csv manual-tests/incoming/
-   ```
-
-2. **Parse and Normalize**: Convert heterogeneous formats into a unified test manifest:
-   ```bash
-   npm run parse:manual
-   ```
-
-3. **Synthesize Automation**: Run the autonomous generator or instruct an agent:
-   ```bash
-   npm run generate:tests
-   ```
-   The engine:
-   - Evaluates existing Page Object Models (`pages/`) and extends them if new elements are encountered.
-   - Generates production-ready Playwright tests in `tests/regression/ingested-tests.spec.ts`.
-   - Injects TMS annotations (`TMS_ID`, `TMS_System`, `Source_File`) for complete auditability.
-   - Updates `manual-tests/traceability-matrix.md` with live coverage statistics.
-
-4. **Verify and Run**:
-   ```bash
-   npx playwright test tests/regression/ingested-tests.spec.ts
-   ```
-
----
-
-## How to Add New Tests
-
-### 1. Create or Extend a Page Object
-All pages inherit from `BasePage`:
-
-```typescript
-// pages/CheckoutPage.ts
-import { Page, Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
-
-export class CheckoutPage extends BasePage {
-  readonly firstNameInput: Locator;
-  readonly continueButton: Locator;
-
-  constructor(page: Page) {
-    super(page);
-    this.firstNameInput = page.getByRole('textbox', { name: 'First Name' });
-    this.continueButton = page.getByRole('button', { name: 'Continue' });
-  }
-
-  async fillShippingDetails(firstName: string) {
-    await this.firstNameInput.fill(firstName);
-    await this.continueButton.click();
-  }
-}
-```
-
-### 2. Write the Test Spec
-Choose the appropriate folder (`tests/smoke/` for critical smoke checks or `tests/regression/` for comprehensive flows):
-
-```typescript
-// tests/smoke/checkout.smoke.spec.ts
-import { test, expect } from '../fixtures/baseTest';
-
-test.describe('Checkout Sanity @smoke', () => {
-  test('should navigate to checkout step one', async ({ loginPage, inventoryPage }) => {
-    await loginPage.navigate();
-    await loginPage.login('standard_user', 'secret_sauce');
-    await inventoryPage.addItemToCart('Sauce Labs Backpack');
-    await inventoryPage.goToCart();
-    await expect(inventoryPage.page).toHaveURL(/cart/);
-  });
-});
-```
-
----
-
-## Best Practices & Quality Standards
-
-1. **Accessible Locators**: Always prioritize user-facing locators (`getByRole`, `getByLabel`, `getByText`) over fragile CSS or XPath selectors.
-2. **Web-First Assertions**: Use `await expect(locator).toBeVisible()` or `await expect(page).toHaveURL()` instead of manual timeouts or boolean evaluations.
-3. **No Hardcoded Delays**: Never use `page.waitForTimeout()`. Rely on Playwright's automatic waiting and auto-retrying assertions.
-4. **Isolated Test State**: Keep tests independent; each test must manage its own navigation or authenticated state.
+Configuration is maintained in `.agents/mcp_config.json` and `.mcp.json`.
 
 ---
 
 ## License
+
 This project is licensed under the MIT License.
