@@ -43,28 +43,39 @@ playwright-automation/
 │       ├── api-test-suite-builder/   # API testing patterns
 │       └── ship-gate/                # Definition of Done & release gates
 ├── manual-tests/                     # Test Management System (TMS) Ingestion
-│   ├── incoming/                     # Drop zone for exported manual tests (CSV, JSON, .feature, .md)
+│   ├── incoming/                     # Drop zone for exported manual tests (e.g. orbit_testrail_import.csv)
 │   ├── examples/                     # Ready-to-use export templates (TestRail, Xray, Zephyr, MD)
 │   ├── parsed/                       # Normalized test manifests (test-manifest.json)
-│   └── traceability-matrix.md        # Bi-directional mapping: TMS ID -> Spec -> Status
+│   └── traceability-matrix.md        # Bi-directional mapping: 48/48 (100%) automated coverage
 ├── pages/                            # Page Object Models (POM)
 │   ├── BasePage.ts                   # Core page abstraction & shared actions
-│   ├── LoginPage.ts                  # Authentication page objects
-│   └── InventoryPage.ts              # Product catalog page objects
+│   └── orbit/                        # Orbit Platform POMs
+│       ├── OrbitLoginPage.ts         # Authentication & quick sign-in
+│       ├── OrbitWorkspacePage.ts     # Workspace, navigation, notifications, search
+│       ├── OrbitProjectModal.ts      # Project creation & column configuration
+│       ├── OrbitSprintModal.ts       # Sprint management, planning & completion
+│       ├── OrbitIssueModal.ts        # Issue creation, detail modal, checklists, comments
+│       └── OrbitUserModal.ts         # User management, RBAC & admin controls
 ├── scripts/                          # Pipeline Automation Scripts
 │   ├── parse-manual-tests.ts         # Multi-format TMS normalization engine
 │   └── generate-automation.ts        # Autonomous Playwright spec & matrix generator
-├── tests/                            # Automated Test Suites
+├── tests/                            # Automated Test Suites (48 tests)
 │   ├── fixtures/
 │   │   └── baseTest.ts               # Custom Playwright test fixture with injected POMs
-│   ├── smoke/                        # Fast, high-priority sanity tests (@smoke)
-│   │   └── auth.smoke.spec.ts
-│   └── regression/                   # End-to-end full user journeys (@regression)
-│       ├── e2e-shopping.spec.ts
-│       └── ingested-tests.spec.ts    # Generated tests from ingested manual cases
+│   ├── smoke/                        # Sanity suite (@smoke)
+│   │   └── auth.smoke.spec.ts        # TC-1..3, TC-7..8
+│   └── regression/                   # Modular regression suites (@regression)
+│       ├── auth.spec.ts              # TC-4..6 (Negative authentication)
+│       ├── projects.spec.ts          # TC-9..16 (Project lifecycle & columns)
+│       ├── sprints.spec.ts           # TC-17..22 (Sprint scheduling & completion)
+│       ├── issues.spec.ts            # TC-23..31 (Issue CRUD, markdown, checklists)
+│       ├── search-filters.spec.ts    # TC-32..35 (Keyword & multi-criteria filters)
+│       ├── user-management.spec.ts   # TC-36..40 (RBAC, user lifecycle, passwords)
+│       ├── profile-notifications.spec.ts # TC-41..44 (User profile & notifications)
+│       └── keyboard-ux.spec.ts       # TC-45..48 (Shortcuts & responsive UX)
 ├── utils/                            # Shared Utilities & Config
 │   ├── env.ts                        # Environment configuration
-│   └── testData.ts                   # Test datasets & mock payloads
+│   └── testData.ts                   # Orbit test users & project constants
 ├── .github/workflows/                # CI/CD Pipelines
 │   └── playwright-ci.yml             # Automated CI workflow
 ├── playwright.config.ts              # Global Playwright configuration
