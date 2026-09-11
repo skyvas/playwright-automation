@@ -1,13 +1,23 @@
 {
   "name": "playwright-automation",
   "version": "1.0.0",
+  "description": "Playwright Automation Framework with MCP Server and QA Agent Support",
   "scripts": {
     "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test tests/regression",
     "test:headed": "npx playwright test --headed",
-    "test:report": "npx playwright show-report"
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:report": "npx playwright show-report",
+    "mcp:playwright": "npx -y @playwright/mcp --headless",
+    "mcp:playwright:headed": "npx -y @playwright/mcp",
+    "parse:manual": "tsx scripts/parse-manual-tests.ts",
+    "generate:tests": "tsx scripts/generate-automation.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "tsx": "^4.23.13"
   }
 }

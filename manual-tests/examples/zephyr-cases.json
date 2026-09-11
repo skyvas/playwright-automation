@@ -1,0 +1,42 @@
+[
+  {
+    "key": "ZEP-101",
+    "name": "Verify product catalog display after authentication",
+    "status": "Approved",
+    "priority": "High",
+    "component": "Catalog",
+    "precondition": "User is authenticated with valid credentials",
+    "steps": [
+      {
+        "index": 1,
+        "description": "Navigate to the inventory page",
+        "expectedResult": "Page URL contains /inventory.html"
+      },
+      {
+        "index": 2,
+        "description": "Verify product items are displayed",
+        "expectedResult": "At least 1 product card is visible"
+      }
+    ]
+  },
+  {
+    "key": "ZEP-102",
+    "name": "Verify cart persistence across navigation",
+    "status": "Draft",
+    "priority": "Medium",
+    "component": "Shopping Cart",
+    "precondition": "User has 1 item added to cart",
+    "steps": [
+      {
+        "index": 1,
+        "description": "Click on the shopping cart container icon",
+        "expectedResult": "Cart page loads showing added items"
+      },
+      {
+        "index": 2,
+        "description": "Verify cart item count matches badge count",
+        "expectedResult": "Number of cart items equals badge count"
+      }
+    ]
+  }
+]
