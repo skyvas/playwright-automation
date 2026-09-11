@@ -1,109 +1,1371 @@
 [
   {
-    "id": "C101",
-    "title": "Verify valid user can login successfully",
+    "id": "TC-1",
+    "title": "Valid admin login grants workspace access",
     "suite": "Authentication",
     "priority": "smoke",
     "preconditions": [
-      "User is on the login page"
+      "Use the published quick-sign-in credential admin / admin123."
     ],
     "steps": [
       {
         "stepNumber": 1,
-        "action": "Enter valid username in Username field",
+        "action": "Open the Orbit sign-in page - https://orbit-platform.wasmer.app/",
         "expected": "Action completed successfully"
       },
       {
         "stepNumber": 2,
-        "action": "Enter valid password in Password field",
+        "action": "Enter username `admin`.",
         "expected": "Action completed successfully"
       },
       {
         "stepNumber": 3,
-        "action": "Click Login button",
-        "expected": "User is redirected to inventory page with product catalog displayed"
+        "action": "Enter password `admin123`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Select Sign In to Workspace.",
+        "expected": "The user is authenticated and the Orbit workspace is displayed with ADMIN privileges and project/board controls."
       }
     ],
-    "sourceFile": "testrail-export.csv",
+    "sourceFile": "orbit_testrail_import.csv",
     "sourceSystem": "TestRail"
   },
   {
-    "id": "C102",
-    "title": "Verify locked out user receives error message",
+    "id": "TC-2",
+    "title": "Valid member login grants member-level workspace access",
     "suite": "Authentication",
-    "priority": "regression",
-    "preconditions": [
-      "User is on the login page"
-    ],
-    "steps": [
-      {
-        "stepNumber": 1,
-        "action": "Enter 'locked_out_user' in Username field",
-        "expected": "Action completed successfully"
-      },
-      {
-        "stepNumber": 2,
-        "action": "Enter valid password in Password field",
-        "expected": "Action completed successfully"
-      },
-      {
-        "stepNumber": 3,
-        "action": "Click Login button",
-        "expected": "Error message 'Sorry, this user has been locked out.' is displayed"
-      }
-    ],
-    "sourceFile": "testrail-export.csv",
-    "sourceSystem": "TestRail"
-  },
-  {
-    "id": "C103",
-    "title": "Add product to cart and verify cart badge",
-    "suite": "Shopping Cart",
     "priority": "smoke",
     "preconditions": [
-      "User is logged in on inventory page"
+      "Use the published quick-sign-in credential alex / alex123."
     ],
     "steps": [
       {
         "stepNumber": 1,
-        "action": "Locate 'Sauce Labs Backpack'",
+        "action": "Open the sign-in page.",
         "expected": "Action completed successfully"
       },
       {
         "stepNumber": 2,
-        "action": "Click 'Add to cart' button",
+        "action": "Enter `alex` and `alex123`.",
         "expected": "Action completed successfully"
       },
       {
         "stepNumber": 3,
-        "action": "Check shopping cart badge",
-        "expected": "Shopping cart badge count increments to 1"
+        "action": "Sign in.",
+        "expected": "The workspace opens as the member account and member-appropriate controls are shown."
       }
     ],
-    "sourceFile": "testrail-export.csv",
+    "sourceFile": "orbit_testrail_import.csv",
     "sourceSystem": "TestRail"
   },
   {
-    "id": "C104",
-    "title": "Remove product from cart from inventory page",
-    "suite": "Shopping Cart",
-    "priority": "regression",
+    "id": "TC-3",
+    "title": "Valid viewer login grants viewer-level workspace access",
+    "suite": "Authentication",
+    "priority": "smoke",
     "preconditions": [
-      "User has added 'Sauce Labs Backpack' to cart"
+      "Use the published quick-sign-in credential sam / sam123."
     ],
     "steps": [
       {
         "stepNumber": 1,
-        "action": "Click 'Remove' button on 'Sauce Labs Backpack'",
+        "action": "Open the sign-in page.",
         "expected": "Action completed successfully"
       },
       {
         "stepNumber": 2,
-        "action": "Check shopping cart badge",
-        "expected": "Cart badge disappears or shows 0"
+        "action": "Enter `sam` and `sam123`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Sign in.",
+        "expected": "The workspace opens as the viewer account and viewer restrictions are enforced."
       }
     ],
-    "sourceFile": "testrail-export.csv",
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-4",
+    "title": "Invalid password is rejected",
+    "suite": "Authentication",
+    "priority": "smoke",
+    "preconditions": [
+      "A valid username exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Enter a valid username.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter an incorrect password.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Sign in.",
+        "expected": "Authentication fails, the user remains on the sign-in screen, and an invalid-credentials message is shown."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-5",
+    "title": "Unknown username is rejected",
+    "suite": "Authentication",
+    "priority": "smoke",
+    "preconditions": [
+      "None."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Enter an unknown username.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter any password.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Sign in.",
+        "expected": "Authentication fails without entering the workspace and an invalid-credentials message is shown."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-6",
+    "title": "Required login fields are validated",
+    "suite": "Authentication",
+    "priority": "smoke",
+    "preconditions": [
+      "None."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Leave username and password blank.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Attempt to sign in.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Repeat with one field blank.",
+        "expected": "The form prevents submission and clearly indicates the missing required value(s)."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-7",
+    "title": "Logout invalidates the active session",
+    "suite": "Authentication",
+    "priority": "smoke",
+    "preconditions": [
+      "A user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Sign in.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Logout.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Attempt to access the workspace using the browser Back button or a previously loaded workspace URL.",
+        "expected": "The session is invalidated; protected project/Kanban data is not accessible and the sign-in screen is shown."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-8",
+    "title": "Post-logout session data is purged",
+    "suite": "Authentication",
+    "priority": "smoke",
+    "preconditions": [
+      "A user is signed in and has loaded workspace data."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Sign in and load the workspace.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Log out.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Observe the logout confirmation/state.",
+        "expected": "The logout flow reports session invalidation, cookie deletion, and clearing of project/Kanban data."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-9",
+    "title": "Create project with required fields",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Project.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a unique project key.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Enter a project name.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Optionally enter a description.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 5,
+        "action": "Select Create Project.",
+        "expected": "The project is created and becomes selectable in the project control."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-10",
+    "title": "Project creation blocks missing project key",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Project.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a project name only.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Create Project.",
+        "expected": "The project is not created and the required Project Key field is flagged."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-11",
+    "title": "Project creation blocks missing project name",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Project.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a project key only.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Create Project.",
+        "expected": "The project is not created and the required Project Name field is flagged."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-12",
+    "title": "Default Kanban workflow is provisioned for a new project",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Create a valid new project.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Open the project's board/workflow configuration.",
+        "expected": "The new project has the documented five default Kanban columns."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-13",
+    "title": "Add a custom Kanban column",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "A project exists and admin can configure its workflow."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Configure Kanban Columns.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a unique stage name.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Add Stage.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Save the configuration.",
+        "expected": "The custom stage is added and appears in the configured workflow order."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-14",
+    "title": "Configure Kanban column order and titles",
+    "suite": "Projects",
+    "priority": "regression",
+    "preconditions": [
+      "A project exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open column configuration.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Add or modify workflow stages.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Save the configuration.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Reopen the configuration.",
+        "expected": "The saved stage names and ordering persist after reopening."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-15",
+    "title": "Cancel project creation does not create a project",
+    "suite": "Projects",
+    "priority": "regression",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Project.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter otherwise valid project data.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Cancel.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Open the project selector.",
+        "expected": "No new project is present."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-16",
+    "title": "Project selector switches the active project",
+    "suite": "Projects",
+    "priority": "smoke",
+    "preconditions": [
+      "At least two projects are available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Select Project A.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Note displayed board data.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Project B.",
+        "expected": "The workspace context switches to Project B and its data is displayed."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-17",
+    "title": "Create and schedule sprint with required name",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in and a project exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Sprint Management.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Plan New Sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Enter a sprint name.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Enter goal and valid start/end dates.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 5,
+        "action": "Select Create & Schedule Sprint.",
+        "expected": "The sprint is created/scheduled and appears in the sprint list."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-18",
+    "title": "Sprint creation blocks missing sprint name",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Plan New Sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Leave Sprint Name blank.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Enter other valid fields.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Select Create & Schedule Sprint.",
+        "expected": "The sprint is not created and Sprint Name is reported as required."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-19",
+    "title": "Sprint date range is validated",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Create a sprint with an end date earlier than its start date.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Submit the sprint.",
+        "expected": "The invalid date range is rejected with clear validation feedback."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-20",
+    "title": "Start sprint changes sprint state to active",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "A planned sprint exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Sprint Management.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select the planned sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Start the sprint.",
+        "expected": "The sprint becomes the active/current sprint and its state is reflected in the UI."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-21",
+    "title": "Complete sprint summarizes completed and incomplete issues",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "An active sprint contains at least one completed and one incomplete issue."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Complete Sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Review the completed and incomplete counts.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Complete the sprint.",
+        "expected": "Counts are accurate and the sprint is marked complete."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-22",
+    "title": "Incomplete sprint issues can be carried over",
+    "suite": "Sprints",
+    "priority": "smoke",
+    "preconditions": [
+      "An active sprint contains incomplete issues and a destination sprint exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Complete the active sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select a destination sprint for incomplete issues.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Confirm completion.",
+        "expected": "Incomplete issues are moved to the selected destination sprint and remain available."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-23",
+    "title": "Create issue with required title",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "A project exists and user can create issues."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select project and optionally sprint.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Enter a title.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Set priority, status, type, points, assignee, and tags.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 5,
+        "action": "Create the issue.",
+        "expected": "The issue is created with a unique issue key and the supplied field values."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-24",
+    "title": "Issue creation blocks missing title",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "A project exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Create Issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Leave Title blank.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Create Issue.",
+        "expected": "The issue is not created and Title is flagged as required."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-25",
+    "title": "Issue accepts Markdown description",
+    "suite": "Issues",
+    "priority": "regression",
+    "preconditions": [
+      "A project exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Create or edit an issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter Markdown formatting in Description.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Save changes.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Reopen the issue.",
+        "expected": "The description is saved and rendered/supported as Markdown without data loss."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-26",
+    "title": "Issue supports priority, type, status, points, sprint, assignee, and tags",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "A project exists and team members are available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Create an issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Populate each supported field with valid values.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Save.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Reopen the issue.",
+        "expected": "All selected values persist and are displayed correctly."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-27",
+    "title": "Acceptance checklist items can be added and completed",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "An issue exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open an issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Add an acceptance criterion.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Mark it complete.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Observe the completion counter.",
+        "expected": "The criterion is stored, its completion state changes, and the counter updates accurately."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-28",
+    "title": "Issue comments can be posted",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "An issue exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open an issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a comment.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Post Comment.",
+        "expected": "The comment appears in Discussion & Comments with the correct author/context."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-29",
+    "title": "Issue supports image attachment",
+    "suite": "Issues",
+    "priority": "regression",
+    "preconditions": [
+      "An issue exists and a valid image file is available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open an issue.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Add an image attachment.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Save.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Reopen the issue.",
+        "expected": "The attachment is uploaded, associated with the issue, and can be previewed."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-30",
+    "title": "Issue attachment can be previewed and downloaded",
+    "suite": "Issues",
+    "priority": "regression",
+    "preconditions": [
+      "An issue has an image attachment."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open the attachment preview.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Download.",
+        "expected": "The attachment preview displays the correct file and download action retrieves the file."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-31",
+    "title": "Issue changes persist after Save Changes",
+    "suite": "Issues",
+    "priority": "smoke",
+    "preconditions": [
+      "An existing issue is available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Edit title, description, priority, points, sprint, or tags.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Save Changes.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Close and reopen the issue.",
+        "expected": "Saved values persist exactly and are displayed after reopening."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-32",
+    "title": "Keyword filter returns matching issues",
+    "suite": "Search & Filters",
+    "priority": "smoke",
+    "preconditions": [
+      "Multiple issues exist with distinct titles/keys/tags."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Enter a distinctive keyword in the issue filter.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe results.",
+        "expected": "Only matching issues are displayed."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-33",
+    "title": "Issue key search returns the exact issue",
+    "suite": "Search & Filters",
+    "priority": "smoke",
+    "preconditions": [
+      "At least one issue exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Enter a known issue key in the filter.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe results.",
+        "expected": "The matching issue is returned and unrelated issues are excluded."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-34",
+    "title": "Combined filters narrow results",
+    "suite": "Search & Filters",
+    "priority": "smoke",
+    "preconditions": [
+      "Issues exist with different types, tags, priorities, assignees, and columns."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Apply two or more filters.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe results.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Clear one filter.",
+        "expected": "Results satisfy all active filters and expand appropriately when a filter is cleared."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-35",
+    "title": "Clear filters restores the full issue set",
+    "suite": "Search & Filters",
+    "priority": "regression",
+    "preconditions": [
+      "Multiple issues exist."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Apply keyword and/or dropdown filters.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Clear.",
+        "expected": "All filters reset and the unfiltered issue list is restored."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-36",
+    "title": "Admin can create a team member",
+    "suite": "User Management",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open User Management.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Add New User.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Enter unique username, password, full name, email, and role.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 4,
+        "action": "Select Create & Add User.",
+        "expected": "The user is created and appears in the Team Directory with the assigned role."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-37",
+    "title": "User creation validates required fields",
+    "suite": "User Management",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Add New User.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Leave one or more required fields blank.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Submit.",
+        "expected": "The user is not created and each missing required field is identified."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-38",
+    "title": "User role controls permitted actions",
+    "suite": "User Management",
+    "priority": "smoke",
+    "preconditions": [
+      "Admin, member, and viewer accounts are available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Sign in as admin, member, and viewer in separate sessions.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Compare project, sprint, issue, and user-management controls.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Attempt restricted operations.",
+        "expected": "Each role can perform only its authorized actions; restricted operations are hidden or rejected."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-39",
+    "title": "Admin can change another user's name",
+    "suite": "User Management",
+    "priority": "regression",
+    "preconditions": [
+      "Admin is signed in and another user exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open the user's edit-name action.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a new full name.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Save.",
+        "expected": "The user's full name is updated everywhere it is displayed."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-40",
+    "title": "Password change enforces minimum length",
+    "suite": "User Management",
+    "priority": "smoke",
+    "preconditions": [
+      "A user account exists and password management is available."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Change User Password.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a password shorter than four characters.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Submit.",
+        "expected": "The password is rejected with validation feedback and the existing password remains valid."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-41",
+    "title": "User can update own profile name",
+    "suite": "Profile",
+    "priority": "regression",
+    "preconditions": [
+      "A user is signed in."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Edit Profile.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Enter a new full name.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select Save Profile Name.",
+        "expected": "The profile name is updated and reflected in the workspace."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-42",
+    "title": "Notification unread count is displayed",
+    "suite": "Notifications",
+    "priority": "regression",
+    "preconditions": [
+      "The account has at least one unread notification."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open the workspace.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe Notifications count.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Open notifications.",
+        "expected": "The unread count matches the number of unread notifications."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-43",
+    "title": "Mark all notifications as read clears unread state",
+    "suite": "Notifications",
+    "priority": "smoke",
+    "preconditions": [
+      "At least one unread notification exists."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Notifications.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Mark all as read.",
+        "expected": "All notifications become read and the unread count becomes zero."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-44",
+    "title": "Notification filter switches between all and unread",
+    "suite": "Notifications",
+    "priority": "regression",
+    "preconditions": [
+      "Both read and unread notifications exist."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Open Notifications.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Select Unread.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 3,
+        "action": "Select All.",
+        "expected": "Unread shows only unread items; All restores both read and unread items."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-45",
+    "title": "c shortcut opens Create New Issue",
+    "suite": "Keyboard & UX",
+    "priority": "regression",
+    "preconditions": [
+      "User is signed in and not typing into a field."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Press `c`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe the UI.",
+        "expected": "The Create New Issue modal opens."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-46",
+    "title": "slash shortcut focuses issue filter",
+    "suite": "Keyboard & UX",
+    "priority": "regression",
+    "preconditions": [
+      "User is signed in and not typing into another input."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Press `/`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe focus.",
+        "expected": "The issue filter/search input receives keyboard focus."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-47",
+    "title": "Esc closes open modal or preview",
+    "suite": "Keyboard & UX",
+    "priority": "regression",
+    "preconditions": [
+      "A modal or attachment preview is open."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Press `Esc`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe the UI.",
+        "expected": "The currently open modal or preview closes without unintended data changes."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
+    "sourceSystem": "TestRail"
+  },
+  {
+    "id": "TC-48",
+    "title": "Question-mark shortcut opens keyboard guide",
+    "suite": "Keyboard & UX",
+    "priority": "regression",
+    "preconditions": [
+      "User is signed in and not typing into a field."
+    ],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "action": "Press `?`.",
+        "expected": "Action completed successfully"
+      },
+      {
+        "stepNumber": 2,
+        "action": "Observe the UI.",
+        "expected": "The Keyboard Shortcuts guide opens and lists the supported shortcuts."
+      }
+    ],
+    "sourceFile": "orbit_testrail_import.csv",
     "sourceSystem": "TestRail"
   }
 ]

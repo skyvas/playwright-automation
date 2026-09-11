@@ -1,0 +1,150 @@
+﻿Section,Title,Type,Priority,Estimate,References,Preconditions,Steps,Expected Result
+Authentication,Valid admin login grants workspace access,Functional,Critical,2m,Authentication; RBAC,Use the published quick-sign-in credential admin / admin123.,"1. Open the Orbit sign-in page - https://orbit-platform.wasmer.app/
+2. Enter username `admin`.
+3. Enter password `admin123`.
+4. Select Sign In to Workspace.",The user is authenticated and the Orbit workspace is displayed with ADMIN privileges and project/board controls.
+Authentication,Valid member login grants member-level workspace access,Functional,High,2m,Authentication; RBAC,Use the published quick-sign-in credential alex / alex123.,"1. Open the sign-in page.
+2. Enter `alex` and `alex123`.
+3. Sign in.",The workspace opens as the member account and member-appropriate controls are shown.
+Authentication,Valid viewer login grants viewer-level workspace access,Functional,High,2m,Authentication; RBAC,Use the published quick-sign-in credential sam / sam123.,"1. Open the sign-in page.
+2. Enter `sam` and `sam123`.
+3. Sign in.",The workspace opens as the viewer account and viewer restrictions are enforced.
+Authentication,Invalid password is rejected,Functional,Critical,1m,Authentication,A valid username exists.,"1. Enter a valid username.
+2. Enter an incorrect password.
+3. Sign in.","Authentication fails, the user remains on the sign-in screen, and an invalid-credentials message is shown."
+Authentication,Unknown username is rejected,Functional,High,1m,Authentication,None.,"1. Enter an unknown username.
+2. Enter any password.
+3. Sign in.",Authentication fails without entering the workspace and an invalid-credentials message is shown.
+Authentication,Required login fields are validated,Functional,High,1m,Authentication,None.,"1. Leave username and password blank.
+2. Attempt to sign in.
+3. Repeat with one field blank.",The form prevents submission and clearly indicates the missing required value(s).
+Authentication,Logout invalidates the active session,Functional,Critical,2m,Authentication; Session Security,A user is signed in.,"1. Sign in.
+2. Select Logout.
+3. Attempt to access the workspace using the browser Back button or a previously loaded workspace URL.",The session is invalidated; protected project/Kanban data is not accessible and the sign-in screen is shown.
+Authentication,Post-logout session data is purged,Functional,Critical,2m,Session Security,A user is signed in and has loaded workspace data.,"1. Sign in and load the workspace.
+2. Log out.
+3. Observe the logout confirmation/state.","The logout flow reports session invalidation, cookie deletion, and clearing of project/Kanban data."
+Projects,Create project with required fields,Functional,Critical,3m,Projects,Admin user is signed in.,"1. Open Create Project.
+2. Enter a unique project key.
+3. Enter a project name.
+4. Optionally enter a description.
+5. Select Create Project.",The project is created and becomes selectable in the project control.
+Projects,Project creation blocks missing project key,Functional,High,1m,Projects,Admin user is signed in.,"1. Open Create Project.
+2. Enter a project name only.
+3. Select Create Project.",The project is not created and the required Project Key field is flagged.
+Projects,Project creation blocks missing project name,Functional,High,1m,Projects,Admin user is signed in.,"1. Open Create Project.
+2. Enter a project key only.
+3. Select Create Project.",The project is not created and the required Project Name field is flagged.
+Projects,Default Kanban workflow is provisioned for a new project,Functional,High,3m,Projects; Kanban,Admin user is signed in.,"1. Create a valid new project.
+2. Open the project's board/workflow configuration.",The new project has the documented five default Kanban columns.
+Projects,Add a custom Kanban column,Functional,High,2m,Kanban,A project exists and admin can configure its workflow.,"1. Open Configure Kanban Columns.
+2. Enter a unique stage name.
+3. Select Add Stage.
+4. Save the configuration.",The custom stage is added and appears in the configured workflow order.
+Projects,Configure Kanban column order and titles,Functional,Medium,3m,Kanban,A project exists.,"1. Open column configuration.
+2. Add or modify workflow stages.
+3. Save the configuration.
+4. Reopen the configuration.",The saved stage names and ordering persist after reopening.
+Projects,Cancel project creation does not create a project,Functional,Medium,1m,Projects,Admin user is signed in.,"1. Open Create Project.
+2. Enter otherwise valid project data.
+3. Select Cancel.
+4. Open the project selector.",No new project is present.
+Projects,Project selector switches the active project,Functional,High,2m,Projects,At least two projects are available.,"1. Select Project A.
+2. Note displayed board data.
+3. Select Project B.",The workspace context switches to Project B and its data is displayed.
+Sprints,Create and schedule sprint with required name,Functional,Critical,3m,Sprints,Admin user is signed in and a project exists.,"1. Open Sprint Management.
+2. Select Plan New Sprint.
+3. Enter a sprint name.
+4. Enter goal and valid start/end dates.
+5. Select Create & Schedule Sprint.",The sprint is created/scheduled and appears in the sprint list.
+Sprints,Sprint creation blocks missing sprint name,Functional,High,1m,Sprints,Admin user is signed in.,"1. Open Plan New Sprint.
+2. Leave Sprint Name blank.
+3. Enter other valid fields.
+4. Select Create & Schedule Sprint.",The sprint is not created and Sprint Name is reported as required.
+Sprints,Sprint date range is validated,Functional,High,2m,Sprints,Admin user is signed in.,"1. Create a sprint with an end date earlier than its start date.
+2. Submit the sprint.",The invalid date range is rejected with clear validation feedback.
+Sprints,Start sprint changes sprint state to active,Functional,High,2m,Sprints,A planned sprint exists.,"1. Open Sprint Management.
+2. Select the planned sprint.
+3. Start the sprint.",The sprint becomes the active/current sprint and its state is reflected in the UI.
+Sprints,Complete sprint summarizes completed and incomplete issues,Functional,Critical,3m,Sprints; Issues,An active sprint contains at least one completed and one incomplete issue.,"1. Open Complete Sprint.
+2. Review the completed and incomplete counts.
+3. Complete the sprint.",Counts are accurate and the sprint is marked complete.
+Sprints,Incomplete sprint issues can be carried over,Functional,High,3m,Sprints; Issues,An active sprint contains incomplete issues and a destination sprint exists.,"1. Complete the active sprint.
+2. Select a destination sprint for incomplete issues.
+3. Confirm completion.",Incomplete issues are moved to the selected destination sprint and remain available.
+Issues,Create issue with required title,Functional,Critical,3m,Issues,A project exists and user can create issues.,"1. Open Create Issue.
+2. Select project and optionally sprint.
+3. Enter a title.
+4. Set priority, status, type, points, assignee, and tags.
+5. Create the issue.",The issue is created with a unique issue key and the supplied field values.
+Issues,Issue creation blocks missing title,Functional,High,1m,Issues,A project exists.,"1. Open Create Issue.
+2. Leave Title blank.
+3. Select Create Issue.",The issue is not created and Title is flagged as required.
+Issues,Issue accepts Markdown description,Functional,Medium,2m,Issues,A project exists.,"1. Create or edit an issue.
+2. Enter Markdown formatting in Description.
+3. Save changes.
+4. Reopen the issue.",The description is saved and rendered/supported as Markdown without data loss.
+Issues,"Issue supports priority, type, status, points, sprint, assignee, and tags",Functional,High,3m,Issues,A project exists and team members are available.,"1. Create an issue.
+2. Populate each supported field with valid values.
+3. Save.
+4. Reopen the issue.",All selected values persist and are displayed correctly.
+Issues,Acceptance checklist items can be added and completed,Functional,High,2m,Issues; Acceptance Criteria,An issue exists.,"1. Open an issue.
+2. Add an acceptance criterion.
+3. Mark it complete.
+4. Observe the completion counter.","The criterion is stored, its completion state changes, and the counter updates accurately."
+Issues,Issue comments can be posted,Functional,High,2m,Issues; Collaboration,An issue exists.,"1. Open an issue.
+2. Enter a comment.
+3. Select Post Comment.",The comment appears in Discussion & Comments with the correct author/context.
+Issues,Issue supports image attachment,Functional,Medium,3m,Issues; Attachments,An issue exists and a valid image file is available.,"1. Open an issue.
+2. Add an image attachment.
+3. Save.
+4. Reopen the issue.","The attachment is uploaded, associated with the issue, and can be previewed."
+Issues,Issue attachment can be previewed and downloaded,Functional,Medium,2m,Attachments,An issue has an image attachment.,"1. Open the attachment preview.
+2. Select Download.",The attachment preview displays the correct file and download action retrieves the file.
+Issues,Issue changes persist after Save Changes,Functional,Critical,2m,Issues,An existing issue is available.,"1. Edit title, description, priority, points, sprint, or tags.
+2. Select Save Changes.
+3. Close and reopen the issue.",Saved values persist exactly and are displayed after reopening.
+Search & Filters,Keyword filter returns matching issues,Functional,High,2m,Search; Filters,Multiple issues exist with distinct titles/keys/tags.,"1. Enter a distinctive keyword in the issue filter.
+2. Observe results.",Only matching issues are displayed.
+Search & Filters,Issue key search returns the exact issue,Functional,High,1m,Search,At least one issue exists.,"1. Enter a known issue key in the filter.
+2. Observe results.",The matching issue is returned and unrelated issues are excluded.
+Search & Filters,Combined filters narrow results,Functional,High,2m,Filters,"Issues exist with different types, tags, priorities, assignees, and columns.","1. Apply two or more filters.
+2. Observe results.
+3. Clear one filter.",Results satisfy all active filters and expand appropriately when a filter is cleared.
+Search & Filters,Clear filters restores the full issue set,Functional,Medium,1m,Filters,Multiple issues exist.,"1. Apply keyword and/or dropdown filters.
+2. Select Clear.",All filters reset and the unfiltered issue list is restored.
+User Management,Admin can create a team member,Functional,Critical,3m,User Management; RBAC,Admin user is signed in.,"1. Open User Management.
+2. Select Add New User.
+3. Enter unique username, password, full name, email, and role.
+4. Select Create & Add User.",The user is created and appears in the Team Directory with the assigned role.
+User Management,User creation validates required fields,Functional,High,2m,User Management,Admin user is signed in.,"1. Open Add New User.
+2. Leave one or more required fields blank.
+3. Submit.",The user is not created and each missing required field is identified.
+User Management,User role controls permitted actions,Functional,Critical,4m,RBAC,"Admin, member, and viewer accounts are available.","1. Sign in as admin, member, and viewer in separate sessions.
+2. Compare project, sprint, issue, and user-management controls.
+3. Attempt restricted operations.",Each role can perform only its authorized actions; restricted operations are hidden or rejected.
+User Management,Admin can change another user's name,Functional,Medium,2m,User Management,Admin is signed in and another user exists.,"1. Open the user's edit-name action.
+2. Enter a new full name.
+3. Save.",The user's full name is updated everywhere it is displayed.
+User Management,Password change enforces minimum length,Functional,High,2m,User Management; Security,A user account exists and password management is available.,"1. Open Change User Password.
+2. Enter a password shorter than four characters.
+3. Submit.",The password is rejected with validation feedback and the existing password remains valid.
+Profile,User can update own profile name,Functional,Medium,2m,Profile,A user is signed in.,"1. Open Edit Profile.
+2. Enter a new full name.
+3. Select Save Profile Name.",The profile name is updated and reflected in the workspace.
+Notifications,Notification unread count is displayed,Functional,Medium,2m,Notifications,The account has at least one unread notification.,"1. Open the workspace.
+2. Observe Notifications count.
+3. Open notifications.",The unread count matches the number of unread notifications.
+Notifications,Mark all notifications as read clears unread state,Functional,High,1m,Notifications,At least one unread notification exists.,"1. Open Notifications.
+2. Select Mark all as read.",All notifications become read and the unread count becomes zero.
+Notifications,Notification filter switches between all and unread,Functional,Medium,1m,Notifications,Both read and unread notifications exist.,"1. Open Notifications.
+2. Select Unread.
+3. Select All.",Unread shows only unread items; All restores both read and unread items.
+Keyboard & UX,c shortcut opens Create New Issue,Functional,Medium,1m,Keyboard Shortcuts,User is signed in and not typing into a field.,"1. Press `c`.
+2. Observe the UI.",The Create New Issue modal opens.
+Keyboard & UX,slash shortcut focuses issue filter,Functional,Medium,1m,Keyboard Shortcuts; Search,User is signed in and not typing into another input.,"1. Press `/`.
+2. Observe focus.",The issue filter/search input receives keyboard focus.
+Keyboard & UX,Esc closes open modal or preview,Functional,Medium,1m,Keyboard Shortcuts,A modal or attachment preview is open.,"1. Press `Esc`.
+2. Observe the UI.",The currently open modal or preview closes without unintended data changes.
+Keyboard & UX,Question-mark shortcut opens keyboard guide,Functional,Low,1m,Keyboard Shortcuts,User is signed in and not typing into a field.,"1. Press `?`.
+2. Observe the UI.",The Keyboard Shortcuts guide opens and lists the supported shortcuts.
