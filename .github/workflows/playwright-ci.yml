@@ -6,15 +6,6 @@ on:
   pull_request:
     branches: [ main, dev ]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: 'pages'
-  cancel-in-progress: false
-
 jobs:
   Test:
     timeout-minutes: 60
@@ -56,30 +47,3 @@ jobs:
           name: playwright-diagnostics
           path: test-results
           retention-days: 14
-
-  Deploy-Report:
-    needs: Test
-    if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
-    runs-on: ubuntu-22.04
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Download HTML report artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: playwright-report
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

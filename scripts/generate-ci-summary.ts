@@ -129,9 +129,6 @@ export function generateCISummary(): void {
     `| Skipped | ${skippedTests} |`,
     `| Total Duration | ${durationSec}s |`,
     '',
-    '## Live Interactive Report',
-    `The full HTML test report is published to GitHub Pages: [Open Live Report](https://${(process.env.GITHUB_REPOSITORY || 'skyvas/playwright-automation').split('/')[0]}.github.io/${(process.env.GITHUB_REPOSITORY || 'skyvas/playwright-automation').split('/')[1]}/)`,
-    '',
   ];
 
   if (failures.length > 0) {

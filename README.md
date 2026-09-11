@@ -140,17 +140,13 @@ npx playwright test --grep "@smoke"
 
 ---
 
-## Continuous Integration & Live Reports
+## Continuous Integration & Test Reporting
 
 This project includes fully automated CI reporting via GitHub Actions:
 
-- **Live GitHub Pages Reports**: Every workflow run on `main` or `dev` automatically deploys the latest interactive HTML report to GitHub Pages at:
-  ```
-  https://skyvas.github.io/playwright-automation/
-  ```
-- **Inline Job Summary**: High-level execution metrics (Pass rate, failed tests table, duration) are rendered directly on the GitHub Actions workflow summary page (`$GITHUB_STEP_SUMMARY`).
+- **Executive Job Summary**: High-level execution metrics (pass rate, test counts, failed tests table, duration) are rendered directly on the GitHub Actions workflow summary page (`$GITHUB_STEP_SUMMARY`).
 - **PR Diff Annotations**: Playwright's `github` reporter annotates failing lines directly in pull request code reviews.
-- **Trace Diagnostics**: Trace files (`.zip`), failure screenshots, and videos are uploaded as workflow artifacts for 1-click inspection via `trace.playwright.dev`.
+- **Report & Trace Artifacts**: The full HTML report (`playwright-report/`) and trace diagnostics (`test-results/` with traces, failure screenshots, and videos) are uploaded as workflow artifacts with a 14-day retention period.
 
 ---
 
