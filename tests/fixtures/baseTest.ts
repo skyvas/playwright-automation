@@ -1,21 +1,33 @@
 import { test as baseTest, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
-import { InventoryPage } from '../../pages/InventoryPage';
+import { BasePage } from '../../pages/BasePage';
 
+/**
+ * Common Page Object fixtures interface.
+ * Extend this type as you synthesize new Page Objects for your application.
+ *
+ * Example:
+ * export type TestFixtures = {
+ *   loginPage: LoginPage;
+ *   dashboardPage: DashboardPage;
+ * };
+ */
 export type TestFixtures = {
-  loginPage: LoginPage;
-  inventoryPage: InventoryPage;
+  /**
+   * Common base navigation helper fixture
+   */
+  navigateTo: (path?: string) => Promise<void>;
 };
 
+/**
+ * Custom Playwright test fixture.
+ * Extend baseTest to inject pre-instantiated page objects and state fixtures.
+ */
 export const test = baseTest.extend<TestFixtures>({
-  loginPage: async ({ page }, use) => {
-    const loginPage = new LoginPage(page);
-    await use(loginPage);
-  },
-  inventoryPage: async ({ page }, use) => {
-    const inventoryPage = new InventoryPage(page);
-    await use(inventoryPage);
+  navigateTo: async ({ page }, use) => {
+    await use(async (targetPath: string = '/') => {
+      await page.goto(targetPath);
+    });
   },
 });
 
-export { expect };
+export { expect, BasePage };

@@ -25,7 +25,16 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
+      - name: Code Quality & Linting Gate
+        run: npm run lint
+
+      - name: TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: Accessibility Compliance Scan
+        run: npm run test:a11y
+
+      - name: Run Full Playwright Test Suites
         run: npx playwright test
 
       - name: Publish GitHub Actions Step Summary
