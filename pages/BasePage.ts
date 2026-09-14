@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 /**
  * BasePage serves as the foundational Page Object model providing common
@@ -30,13 +30,6 @@ export abstract class BasePage {
    */
   getUrl(): string {
     return this.page.url();
-  }
-
-  /**
-   * Wait for network idle state
-   */
-  async waitForNetworkIdle(): Promise<void> {
-    await this.page.waitForLoadState('networkidle');
   }
 
   /**

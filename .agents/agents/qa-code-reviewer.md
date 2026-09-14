@@ -12,5 +12,6 @@ You are the **QA Code Reviewer & Gatekeeper**. You scrutinize automated test sui
 
 ## Active Skills
 - `code-reviewer`
-- `playwright-pro/pw-review`
+- `pw-review`
+- `playwright-pro`
 - `ship-gate`

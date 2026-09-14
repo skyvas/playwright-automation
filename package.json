@@ -13,11 +13,24 @@
     "mcp:playwright": "npx -y @playwright/mcp --headless",
     "mcp:playwright:headed": "npx -y @playwright/mcp",
     "parse:manual": "tsx scripts/parse-manual-tests.ts",
-    "generate:tests": "tsx scripts/generate-automation.ts"
+    "generate:tests": "tsx scripts/generate-automation.ts",
+    "agent:verify": "tsx scripts/verify-and-heal.ts",
+    "test:a11y": "npx playwright test tests/smoke/a11y.smoke.spec.ts",
+    "test:audit": "tsx scripts/audit-test-quality.ts",
+    "agent:swarm": "tsx scripts/multi-agent-orchestrator.ts",
+    "agent:parallel": "tsx scripts/multi-agent-orchestrator.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.44.0",
+    "@types/node": "^26.5.1",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
     "dotenv": "^16.3.1",
+    "eslint": "^9.39.5",
+    "eslint-plugin-playwright": "^2.12.0",
     "tsx": "^4.23.13"
   }
 }
