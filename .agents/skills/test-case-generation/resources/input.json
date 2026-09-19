@@ -1,0 +1,5 @@
+{
+  "targetUrl": "https://saucedemo.com",
+  "feature": "User Authentication and Product Checkout",
+  "instructions": "Verify that standard user can log in, add Sauce Labs Backpack to the shopping cart, proceed to checkout, enter customer details, and finish order successfully."
+}

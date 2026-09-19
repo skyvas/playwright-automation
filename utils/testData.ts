@@ -25,3 +25,8 @@ export const products = {
   bikeLight: 'Sauce Labs Bike Light',
   boltTShirt: 'Sauce Labs Bolt T-Shirt',
 };
+
+export const testData = {
+  credentials,
+  products,
+};

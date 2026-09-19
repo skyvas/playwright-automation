@@ -19,6 +19,13 @@ export abstract class BasePage {
   }
 
   /**
+   * Navigate to a path (alias for navigate)
+   */
+  async goto(path: string = ''): Promise<void> {
+    await this.page.goto(path);
+  }
+
+  /**
    * Get the current page title
    */
   async getTitle(): Promise<string> {

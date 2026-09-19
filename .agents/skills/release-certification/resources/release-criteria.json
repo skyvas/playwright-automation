@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReleaseCertificationCriteria",
+  "type": "object",
+  "required": ["maxPageLoadLatencyMs", "allowed5xxErrors", "requiredBrowserEngines", "smokeSuiteTag"],
+  "properties": {
+    "maxPageLoadLatencyMs": { "type": "integer", "default": 3000 },
+    "allowed5xxErrors": { "type": "integer", "default": 0 },
+    "allowedUncaughtExceptions": { "type": "integer", "default": 0 },
+    "requiredBrowserEngines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["chromium", "firefox", "webkit"]
+    },
+    "smokeSuiteTag": { "type": "string", "default": "@smoke" }
+  }
+}

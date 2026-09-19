@@ -1,5 +1,0 @@
-ID,Title,Section,Preconditions,Steps,Expected Result,Priority
-C101,Verify valid user can login successfully,Authentication,User is on the login page,"1. Enter valid username in Username field\n2. Enter valid password in Password field\n3. Click Login button",User is redirected to inventory page with product catalog displayed,High
-C102,Verify locked out user receives error message,Authentication,User is on the login page,"1. Enter 'locked_out_user' in Username field\n2. Enter valid password in Password field\n3. Click Login button",Error message 'Sorry, this user has been locked out.' is displayed,Medium
-C103,Add product to cart and verify cart badge,Shopping Cart,User is logged in on inventory page,"1. Locate 'Sauce Labs Backpack'\n2. Click 'Add to cart' button\n3. Check shopping cart badge",Shopping cart badge count increments to 1,High
-C104,Remove product from cart from inventory page,Shopping Cart,User has added 'Sauce Labs Backpack' to cart,"1. Click 'Remove' button on 'Sauce Labs Backpack'\n2. Check shopping cart badge",Cart badge disappears or shows 0,Medium
