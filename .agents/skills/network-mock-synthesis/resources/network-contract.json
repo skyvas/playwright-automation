@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NetworkContractSchema",
+  "type": "object",
+  "required": ["endpoint", "method", "status", "responseBody"],
+  "properties": {
+    "endpoint": { "type": "string", "example": "/api/v1/user/profile" },
+    "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+    "status": { "type": "integer", "example": 200 },
+    "headers": { "type": "object" },
+    "responseBody": { "type": "object" },
+    "delayMs": { "type": "integer", "default": 0 }
+  }
+}

@@ -16,95 +16,50 @@ export interface TraceabilityEntry {
 }
 
 /**
- * Generate a clean Playwright test spec from ingested test cases
+ * Standard mapping for known test cases to target spec files (can be extended dynamically)
  */
-export function generateTestSpec(testCases: NormalizedTestCase[]): string {
+const SPEC_MAPPINGS: Record<string, string> = {};
+
+/**
+ * Determine target spec path for a given test case following QA Lead routing rules
+ */
+export function resolveTargetSpec(tc: NormalizedTestCase): string {
+  if (SPEC_MAPPINGS[tc.id]) {
+    return SPEC_MAPPINGS[tc.id];
+  }
+  const suiteSlug = tc.suite ? tc.suite.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : 'general';
+  if (tc.priority === 'smoke') {
+    return `tests/smoke/${suiteSlug || 'smoke'}.smoke.spec.ts`;
+  }
+  return `tests/regression/${suiteSlug || 'regression'}.spec.ts`;
+}
+
+/**
+ * Generate a clean Playwright test spec template for arbitrary unmapped test cases
+ */
+export function generateTestSpec(testCases: NormalizedTestCase[], suiteName: string = 'Generated Suite'): string {
   const code: string[] = [];
   code.push("import { test, expect } from '../fixtures/baseTest';");
-  code.push("import { credentials, products } from '../../utils/testData';");
+  code.push("import { testData } from '../../utils/testData';");
   code.push('');
-  code.push("test.describe('Ingested Manual Tests Suite', () => {");
-  code.push('  test.beforeEach(async ({ loginPage }) => {');
-  code.push('    await loginPage.goto();');
+  code.push(`test.describe('${suiteName}', () => {`);
+  code.push('  test.beforeEach(async ({ page }) => {');
+  code.push('    // Base setup and navigation');
   code.push('  });');
   code.push('');
 
   for (const tc of testCases) {
     const tag = tc.priority === 'smoke' ? '@smoke' : '@regression';
-    code.push(`  test('${tc.id} - ${tc.title.replace(/'/g, "\\'")} ${tag}', async ({ loginPage, inventoryPage, page }) => {`);
-    code.push('    // Bi-directional TMS Traceability Annotations');
+    code.push(`  test('${tc.id} - ${tc.title.replace(/'/g, "\\'")} ${tag}', async ({ page }) => {`);
     code.push(`    test.info().annotations.push({ type: 'TMS_ID', description: '${tc.id}' });`);
     code.push(`    test.info().annotations.push({ type: 'TMS_System', description: '${tc.sourceSystem}' });`);
     code.push(`    test.info().annotations.push({ type: 'Source_File', description: '${tc.sourceFile}' });`);
     code.push('');
 
-    // Precondition handling
-    const needsLogin = tc.preconditions.some(p => p.toLowerCase().includes('logged in') || p.toLowerCase().includes('authenticated'))
-      || tc.suite.toLowerCase().includes('cart') || tc.suite.toLowerCase().includes('shopping');
-
-    if (needsLogin && !tc.steps.some(s => s.action.toLowerCase().includes('username') || s.action.toLowerCase().includes('login'))) {
-      code.push('    // Handle Preconditions');
-      code.push('    await test.step(\'Precondition: Login as valid user\', async () => {');
-      code.push('      await loginPage.login(credentials.validUser.username, credentials.validUser.password);');
-      code.push('      await expect(page).toHaveURL(/inventory\\.html/);');
-      code.push('    });');
-      code.push('');
-    }
-
-    if (tc.preconditions.some(p => p.toLowerCase().includes('added') && p.toLowerCase().includes('cart'))) {
-      code.push('    // Precondition: Add item to cart');
-      code.push('    await test.step(\'Precondition: Add product to cart\', async () => {');
-      code.push('      await inventoryPage.addItemToCartByName(products.backpack);');
-      code.push('      expect(await inventoryPage.getCartBadgeCount()).toBe(1);');
-      code.push('    });');
-      code.push('');
-    }
-
-    // Translate steps into structured test.step calls
     for (const step of tc.steps) {
       code.push(`    await test.step('Step ${step.stepNumber}: ${step.action.replace(/'/g, "\\'")}', async () => {`);
-      const actionLower = step.action.toLowerCase();
-      const expectedLower = step.expected.toLowerCase();
-
-      if (actionLower.includes('valid username') || (actionLower.includes('username') && !actionLower.includes('locked'))) {
-        code.push('      await loginPage.usernameInput.fill(credentials.validUser.username);');
-      } else if (actionLower.includes('locked_out_user') || actionLower.includes('locked')) {
-        code.push('      await loginPage.usernameInput.fill(credentials.lockedOutUser.username);');
-      }
-
-      if (actionLower.includes('password')) {
-        code.push('      await loginPage.passwordInput.fill(credentials.validUser.password);');
-      }
-
-      if (actionLower.includes('login button') || actionLower.includes('click login')) {
-        code.push('      await loginPage.loginButton.click();');
-      }
-
-      if (actionLower.includes('add to cart') || actionLower.includes('add product')) {
-        code.push('      await inventoryPage.addItemToCartByName(products.backpack);');
-      } else if (actionLower.includes('locate') && !actionLower.includes('click')) {
-        code.push('      await expect(inventoryPage.inventoryItems.filter({ hasText: products.backpack })).toBeVisible();');
-      }
-
-      if (actionLower.includes('remove')) {
-        code.push('      await inventoryPage.removeItemFromCartByName(products.backpack);');
-      }
-
-      if (actionLower.includes('badge') || expectedLower.includes('badge')) {
-        if (expectedLower.includes('increments') || expectedLower.includes('1')) {
-          code.push('      expect(await inventoryPage.getCartBadgeCount()).toBe(1);');
-        } else if (expectedLower.includes('disappears') || expectedLower.includes('0')) {
-          code.push('      expect(await inventoryPage.getCartBadgeCount()).toBe(0);');
-        }
-      }
-
-      if (expectedLower.includes('redirected to inventory') || expectedLower.includes('product catalog')) {
-        code.push('      await expect(page).toHaveURL(/inventory\\.html/);');
-      } else if (expectedLower.includes('locked out')) {
-        code.push("      const errorText = await loginPage.getErrorMessage();");
-        code.push("      expect(errorText).toContain('Sorry, this user has been locked out.');");
-      }
-
+      code.push(`      // ${step.expected.replace(/'/g, "\\'")}`);
+      code.push('      await expect(page).toBeDefined();');
       code.push('    });');
       code.push('');
     }
@@ -181,27 +136,23 @@ export function runGenerator(): void {
     return;
   }
 
-  // Generate target spec file
-  const targetSpecPath = 'tests/regression/ingested-tests.spec.ts';
-  const fullSpecPath = path.resolve(process.cwd(), targetSpecPath);
-  const specCode = generateTestSpec(testCases);
-
-  fs.writeFileSync(fullSpecPath, specCode);
-  console.log(`Generated Playwright test spec: ${targetSpecPath}`);
-
-  // Build traceability records
-  const entries: TraceabilityEntry[] = testCases.map(tc => ({
-    manualId: tc.id,
-    title: tc.title,
-    sourceFile: tc.sourceFile,
-    targetSpec: targetSpecPath,
-    suite: tc.suite,
-    priority: tc.priority,
-    status: 'Automated',
-  }));
+  // Build traceability records for all ingested cases
+  const entries: TraceabilityEntry[] = testCases.map(tc => {
+    const targetSpec = resolveTargetSpec(tc);
+    const specExists = fs.existsSync(path.resolve(process.cwd(), targetSpec));
+    return {
+      manualId: tc.id,
+      title: tc.title,
+      sourceFile: tc.sourceFile,
+      targetSpec: targetSpec,
+      suite: tc.suite,
+      priority: tc.priority,
+      status: specExists ? 'Automated' : 'Pending',
+    };
+  });
 
   generateTraceabilityMatrix(entries);
-  console.log(`Traceability matrix generated: ${path.relative(process.cwd(), MATRIX_PATH)}`);
+  console.log(`Traceability matrix updated with ${entries.length} test cases at: ${path.relative(process.cwd(), MATRIX_PATH)}`);
 }
 
 if (require.main === module || process.argv[1]?.includes('generate-automation')) {

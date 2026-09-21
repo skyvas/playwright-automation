@@ -13,7 +13,9 @@
     "mcp:playwright": "npx -y @playwright/mcp --headless",
     "mcp:playwright:headed": "npx -y @playwright/mcp",
     "parse:manual": "tsx scripts/parse-manual-tests.ts",
-    "generate:tests": "tsx scripts/generate-automation.ts"
+    "generate:tests": "tsx scripts/generate-automation.ts",
+    "test:stress": "npx playwright test --repeat-each=3",
+    "verify:spec": "tsx scripts/verify-spec-execution.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",

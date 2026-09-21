@@ -1,0 +1,7 @@
+ID,Title,Preconditions,Steps,Expected Result,Priority
+TC-SMOKE-01,Valid User Authentication,"Browser open on login page","1. Enter username standard_user
+2. Enter password secret_sauce
+3. Click Login button","User redirects to inventory page and inventory list is visible",Smoke
+TC-REG-01,Add Item to Cart and Verify Badge,"User is logged in on inventory page","1. Locate product Sauce Labs Backpack
+2. Click Add to cart button
+3. Inspect shopping cart badge","Shopping cart badge counter updates to 1",Regression

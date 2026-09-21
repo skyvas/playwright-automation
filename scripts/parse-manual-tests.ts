@@ -96,7 +96,7 @@ export function parseTestRailCSV(filePath: string): NormalizedTestCase[] {
   const rows = parseCSV(content);
 
   return rows.map((row, idx) => {
-    const id = row['id'] || row['key'] || `TC-${idx + 1}`;
+    const id = row['test id'] || row['testid'] || row['id'] || row['key'] || `TC-${idx + 1}`;
     const title = row['title'] || row['summary'] || row['name'] || `Test Case ${idx + 1}`;
     const suite = row['section'] || row['suite'] || 'General';
     const rawPriority = (row['priority'] || '').toLowerCase();

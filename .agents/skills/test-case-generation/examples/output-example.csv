@@ -1,0 +1,10 @@
+ID,Title,Preconditions,Steps,Expected Result,Priority
+TC-001,Successful Checkout Flow,"User is on https://saucedemo.com with valid standard credentials","1. Log in with standard_user/secret_sauce
+2. Add 'Sauce Labs Backpack' to cart
+3. Click Shopping Cart link
+4. Click Checkout button
+5. Enter First Name, Last Name, Postal Code
+6. Click Continue and then Finish","User sees 'Thank you for your order!' confirmation",High
+TC-002,Checkout With Missing Postal Code,"User is on checkout step one page","1. Enter First Name and Last Name
+2. Leave Postal Code empty
+3. Click Continue","Validation error displays 'Error: Postal Code is required'",Medium

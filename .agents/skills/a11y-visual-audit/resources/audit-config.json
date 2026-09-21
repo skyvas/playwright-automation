@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "A11yVisualAuditConfig",
+  "type": "object",
+  "required": ["routes", "wcagStandard", "viewports"],
+  "properties": {
+    "routes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["/", "/login", "/pricing"]
+    },
+    "wcagStandard": {
+      "type": "string",
+      "enum": ["WCAG2AA", "WCAG21AA", "WCAG22AA"],
+      "default": "WCAG22AA"
+    },
+    "viewports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "width": { "type": "integer" },
+          "height": { "type": "integer" }
+        }
+      }
+    },
+    "maxDiffPixelRatio": { "type": "number", "default": 0.02 }
+  }
+}

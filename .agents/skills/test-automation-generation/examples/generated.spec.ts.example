@@ -1,0 +1,26 @@
+import { test, expect } from '../../fixtures/baseTest';
+
+test.describe('Automated Ingestion Test Suite', () => {
+  test('TC-SMOKE-01: Valid User Authentication @smoke', async ({ loginPage, page }) => {
+    await test.step('Navigate to login and authenticate', async () => {
+      await loginPage.navigate();
+      await loginPage.login('standard_user', 'secret_sauce');
+    });
+
+    await test.step('Verify navigation to inventory', async () => {
+      await expect(page).toHaveURL(/.*inventory/);
+    });
+  });
+
+  test('TC-REG-01: Add Item to Cart and Verify Badge @regression', async ({ loginPage, inventoryPage }) => {
+    await test.step('Login and prepare session', async () => {
+      await loginPage.navigate();
+      await loginPage.login('standard_user', 'secret_sauce');
+    });
+
+    await test.step('Add product to cart and verify badge count', async () => {
+      await inventoryPage.addProductToCart('Sauce Labs Backpack');
+      await expect(inventoryPage.cartBadge).toHaveText('1');
+    });
+  });
+});

@@ -1,21 +1,13 @@
 import { test as baseTest, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
-import { InventoryPage } from '../../pages/InventoryPage';
 
+/**
+ * Base test fixture providing clean extension points for synthesized Page Object Models.
+ * Adheres to AGENTS.md standards for custom fixture injection.
+ */
 export type TestFixtures = {
-  loginPage: LoginPage;
-  inventoryPage: InventoryPage;
+  // Page object models are registered here as tests are synthesized
 };
 
-export const test = baseTest.extend<TestFixtures>({
-  loginPage: async ({ page }, use) => {
-    const loginPage = new LoginPage(page);
-    await use(loginPage);
-  },
-  inventoryPage: async ({ page }, use) => {
-    const inventoryPage = new InventoryPage(page);
-    await use(inventoryPage);
-  },
-});
+export const test = baseTest.extend<TestFixtures>({});
 
 export { expect };
